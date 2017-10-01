@@ -68,6 +68,12 @@ VASTClient.prototype._getVASTAd = function (adTagUrl, callback) {
 
   getAdWaterfall(adTagUrl, function (error, vastTree) {
     var waterfallAds = vastTree && utilities.isArray(vastTree.ads) ? vastTree.ads : null;
+
+    /* suport for VAST playlists with preroll ad (used in FD) */
+    if (waterfallAds.length == 0 && vastTree.preroll.ad.keyValue) {
+        waterfallAds.push(vastTree.preroll.ad.keyValue);
+    }
+
     if (error) {
       that._trackError(error, waterfallAds);
       return callback(error, waterfallAds);
@@ -122,7 +128,7 @@ VASTClient.prototype._getVASTAd = function (adTagUrl, callback) {
   function validateVASTTree(vastTree) {
     var vastVersion = xml.attr(vastTree, 'version');
 
-    if (!vastTree.ad) {
+    if (!vastTree.ad && !vastTree.preroll.ad) {
       return new VASTError('on VASTClient.getVASTAd.validateVASTTree, no Ad in VAST tree', 303);
     }
 
