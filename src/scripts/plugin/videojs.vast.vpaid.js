@@ -249,6 +249,10 @@ module.exports = function VASTPlugin(options) {
   }
 
   function getVastResponse(callback) {
+    /* Added by Audienceform */
+    player.trigger('vast.adRequest');
+
+
     vast.getVASTResponse(settings.adTagUrl ? settings.adTagUrl() : settings.adTagXML, callback);
   }
 

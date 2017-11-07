@@ -69,7 +69,7 @@ VASTClient.prototype._getVASTAd = function (adTagUrl, callback) {
   getAdWaterfall(adTagUrl, function (error, vastTree) {
     var waterfallAds = vastTree && utilities.isArray(vastTree.ads) ? vastTree.ads : null;
 
-    /* suport for VAST playlists with preroll ad (used in FD) */
+    /* Added by Audienceform: support for VAST playlists with preroll ad (used in FD) */
     if (waterfallAds.length == 0 && vastTree.preroll.ad.keyValue) {
         waterfallAds.push(vastTree.preroll.ad.keyValue);
     }
